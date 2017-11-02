@@ -6,31 +6,31 @@
 
 from zoe import *
 
-def traverse(intent, inner, depth = 0):
-    margin = '  ' * depth
-    margin2 = '  ' * (depth + 1)
-    keys = sorted(intent)
+def traverse(intent, inner, depth = 0, color = '\033[0m', skipMargin = False):
     if intent == inner:
-        print('\033[92m', end = '')
-    print(margin + '{')
+        color = '\033[92m'
+    margin = color + '  ' * depth
+    margin2 = color + '  ' * (depth + 1)
+    keys = sorted(intent)
+    if skipMargin:
+        print(color + '{')
+    else:
+        print(margin + '{')
     for key in keys:
         value = intent[key]
         if isinstance(value, dict):
-            print(margin2 + key + ':', end = '')
-            traverse(value, inner, depth + 1)
+            print(margin2 + key + ': ', end = '')
+            traverse(value, inner, depth + 1, color, True)
         elif isinstance(value, list):
             print(margin2 + key + ': [')
             for p in value:
-                traverse(p, inner, depth + 2)
+                traverse(p, inner, depth + 2, color)
             print(margin2 + ']')
         elif isinstance(value, str):
             print(margin2 + key + ':', '"' + value + '"')
         else:
             print(margin2 + key + ':', value)
     print(margin + '}')
-    if intent == inner:
-        print('\033[0m', end = '')
-
 
 
 @Agent('Log')
