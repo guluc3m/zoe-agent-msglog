@@ -39,6 +39,6 @@ class LogAgent:
     @Any()
     @Raw()
     def x(self, intent):
-        inner = IntentTools.inner_intent(intent)
+        inner, _ = IntentTools.inner_intent(intent)
         traverse(intent, inner)
         print()
